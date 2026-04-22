@@ -1,9 +1,9 @@
 RewriteEngine On
 
-# Remove .html extension from URL
-RewriteCond %{THE_REQUEST} \s/+(.*)\.html[\s?] [NC]
-RewriteRule ^ %1 [R=301,L]
+# Remove .html only inside static-new
+RewriteCond %{THE_REQUEST} \s/+static-new/(.*)\.html[\s?] [NC]
+RewriteRule ^static-new/(.*)\.html$ /static-new/$1 [R=301,L]
 
-# Internally map clean URL to .html file
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^([^/]+)/?$ $1.html [L]
+# Map clean URL to .html file
+RewriteCond %{DOCUMENT_ROOT}/static-new/$1.html -f
+RewriteRule ^static-new/(.*)/?$ /static-new/$1.html [L]
