@@ -1,10 +1,9 @@
 RewriteEngine On
 
-# 1. Redirect /contact.html to /contact (External Redirect)
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /.*\.html\ HTTP/
-RewriteRule ^(.*)\.html$ /$1 [R=301,L]
+# Remove .html extension from URL
+RewriteCond %{THE_REQUEST} \s/+(.*)\.html[\s?] [NC]
+RewriteRule ^ %1 [R=301,L]
 
-# 2. Map /contact back to /contact.html internally (Internal Rewrite)
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteRule ^(.*)$ $1.html [L]
+# Internally map clean URL to .html file
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^/]+)/?$ $1.html [L]
