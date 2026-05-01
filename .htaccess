@@ -1,10 +1,34 @@
+Options -MultiViews
 RewriteEngine On
- 
-# 1. Redirect /page.html to /page (SEO Cleanup)
-RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
-RewriteRule ^ /%1 [L,R=301]
- 
-# 2. Map /page internally to /page.html (The Magic)
+RewriteBase /
+
+# 1. Remove trailing slash (except root)
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+# 2. SEO: Redirect /page.html to /page
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_FILENAME} \.html$ [NC]
+RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+
+# 3. Internal Mapping: Map /page to /page.html
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}\.html -f
 RewriteRule ^(.*)$ $1.html [L]
+
+# 4. Explicit Page Redirects
+RewriteRule ^projects/?$ /our-projects [R=301,L]
+RewriteRule ^projects-2/?$ /our-projects [R=301,L]
+RewriteRule ^projects-3/?$ /our-projects [R=301,L]
+RewriteRule ^engineering-consultants/project-map/?$ /project-map [R=301,L]
+RewriteRule ^ar/engineering-consultants/project-map/?$ /ar/project-map [R=301,L]
+RewriteRule ^services/(residential-design-2|commercial-design-2|office-design)/?$ /our-services [R=301,L,NC]
+RewriteRule ^ar/(projects-2|projects-3)/?$ /our-projects [R=301,L]
+RewriteRule ^ar/projects/?$ /ar/our-projects [R=301,L]
+RewriteRule ^ar/contact/?$ /ar/contact-us [R=301,L]
+RewriteRule ^contact/?$ /contact-us [R=301,L]
+RewriteRule ^(awards|team)/?$ / [R=301,L]
+
+# Arabic encoded URL redirect
+RewriteRule ^استشارات-هندسية-ابوظبي/?$ /ar/استشارات-هندسية-ابوظبي/ [R=301,L]
